@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moving Motivators</title>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <style>
+  #sortable 
+  { 
+	list-style-type: none; 
+	margin: 0; 
+	padding: 50px 50px 0px 50px;
+	width: 95%;
+  }
+
+  #sortable li 
+  { 
+	margin: 5px 5px 5px 5px; 
+	padding: 1px; float: left;
+	width: 300px; 
+	height: 300px; 
+	font-size: 4em; 
+	text-align: center;
+	border-width: 5px; 
+  }
+
+  #sortable li button
+  {
+	float: left;
+	margin: 93% 2px 0 2px;
+  }
+
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#sortable" ).sortable();
+	
+    $( "#sortable" ).disableSelection();
+
+	$(".ui-state-default").click(function() {
+		var id = $(this).attr('id');
+
+		$("#" + id).css({background: 'url(images/' + id +'.png) no-repeat center center', 'background-size' : '100%'});
+	});
+
+	$(".positive").click(function() {
+		var id = $(this).attr('id');
+
+		$("#" + id).css({'border-color' : 'green'});
+	});
+
+	$(".negative").click(function() {
+		var id = $(this).attr('id');
+
+		$("#" + id).css({'border-color' : 'red'});
+	});
+  });
+  </script>
+</head>
+<body>
+ 
+<ul id="sortable">
+	<li id="power" class="ui-state-default">
+		<button id="power" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button id="power" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	</li>
+	<li id="goal" class="ui-state-default">
+		<button id="goal" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button id="goal" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	</li>
+	<li id="acceptance" class="ui-state-default">
+		<button id="acceptance" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button id="acceptance" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	</li>
+	<li id="freedom" class="ui-state-default">
+		<button id="freedom" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button id="freedom" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	</li>
+	<li id="curiosity" class="ui-state-default">
+		<button id="curiosity" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button id="curiosity" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	</li>
+	<li id="mastery" class="ui-state-default">
+		<button id="mastery" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button id="mastery" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	</li>
+	<li id="status" class="ui-state-default">
+		<button id="status" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button id="status" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	</li>
+	<li id="order" class="ui-state-default">
+		<button id="order" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button id="order" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	</li>
+	<li id="honor" class="ui-state-default">
+		<button id="honor" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button id="honor" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	</li>
+	<li id="relatedness" class="ui-state-default">
+		<button id="relatedness" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button id="relatedness" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	</li>
+</ul>
+ 
+</body>
+</html>
