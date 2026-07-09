@@ -1,175 +1,60 @@
-<!--
-  NOTE: This tool is designed for use in web browsers on computers (desktop/laptop).
-  It is NOT intended to run on mobile devices — the fixed 300x300px card layout,
-  drag-and-drop interactions, and vertical +/- movement are not adapted for small
-  touch screens and will likely overflow or be hard to use on a phone or tablet.
--->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Moving Motivators</title>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <title>Moving Motivators has moved</title>
+  <meta http-equiv="refresh" content="8; url=https://julio-gulias.github.io/mov-motivators/moving-motivators.html">
   <style>
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-  }
-
-  #instructions {
-    max-width: 800px;
-    margin: 20px 50px 0 50px;
-    padding: 15px 20px;
-    background: #f7f7f7;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-  }
-
-  #instructions h1 {
-    margin-top: 0;
-    font-size: 1.4em;
-  }
-
-  #instructions ol {
-    margin: 10px 0 0 0;
-    padding-left: 20px;
-  }
-
-  #instructions li {
-    margin-bottom: 6px;
-  }
-
-  #sortable
-  {
-	list-style-type: none;
-	margin: 0;
-	padding: 130px 50px 130px 50px;
-	width: 95%;
-  }
-
-  #sortable li
-  {
-	margin: 5px 5px 5px 5px;
-	padding: 1px; float: left;
-	width: 300px;
-	height: 300px;
-	font-size: 4em;
-	text-align: center;
-	border-width: 5px;
-	transition: transform 0.2s ease, border-color 0.2s ease;
-  }
-
-  #sortable li button
-  {
-	float: left;
-	margin: 93% 2px 0 2px;
-  }
-
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #0a0f16;
+      min-height: 100vh;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+    a.wrap {
+      display: block;
+      max-width: 480px;
+      width: 100%;
+    }
+    a.wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 14px;
+    }
+    p.fallback {
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #8fa1af;
+      font-size: 14px;
+      margin-top: 18px;
+    }
+    p.fallback a {
+      color: #2fd8b0;
+    }
   </style>
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
-  <script>
-  $( function() {
-    var STEP = 25;       // pixels moved per click
-    var MAX_LEVEL = 4;   // how many steps a card can move up or down
-
-    $( "#sortable" ).sortable();
-
-    $( "#sortable" ).disableSelection();
-
-	$(".ui-state-default").click(function() {
-		var id = $(this).attr('id');
-
-		$("#" + id).css({background: 'url(images/' + id +'.png) no-repeat center center', 'background-size' : '100%'});
-	});
-
-	function applyLevel($card) {
-		var level = parseInt($card.attr('data-level'), 10) || 0;
-		$card.css('transform', 'translateY(' + (-level * STEP) + 'px)');
-	}
-
-	$(".positive").on('click', function(e) {
-		e.stopPropagation();
-		var $card = $("#" + $(this).data('target'));
-		var level = parseInt($card.attr('data-level'), 10) || 0;
-		if (level < MAX_LEVEL) {
-			level++;
-			$card.attr('data-level', level);
-		}
-		$card.css({'border-color' : 'green'});
-		applyLevel($card);
-	});
-
-	$(".negative").on('click', function(e) {
-		e.stopPropagation();
-		var $card = $("#" + $(this).data('target'));
-		var level = parseInt($card.attr('data-level'), 10) || 0;
-		if (level > -MAX_LEVEL) {
-			level--;
-			$card.attr('data-level', level);
-		}
-		$card.css({'border-color' : 'red'});
-		applyLevel($card);
-	});
-  });
-  </script>
 </head>
 <body>
 
-<div id="instructions">
-  <h1>Moving Motivators</h1>
-  <ol>
-    <li><strong>Reveal:</strong> click a card to reveal which motivator it represents.</li>
-    <li><strong>Rank:</strong> drag and drop the cards to order them from the most important motivator to you (left) to the least important (right).</li>
-    <li><strong>Reflect:</strong> for each card, click <strong>+</strong> if your current work situation supports that motivator, or <strong>&minus;</strong> if it works against it. Each click nudges the card up or down.</li>
-    <li><strong>Discuss:</strong> cards that end up high are strengths to build on; cards that sink low are worth talking about.</li>
-  </ol>
-  <p style="margin: 12px 0 0 0; font-size: 0.85em; color: #777;">This tool is designed for web browsers on computers and is not optimized for mobile devices.</p>
-</div>
-
-<ul id="sortable">
-	<li id="power" class="ui-state-default" data-level="0" aria-label="Power">
-		<button class="positive" data-target="power" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button class="negative" data-target="power" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
-	</li>
-	<li id="goal" class="ui-state-default" data-level="0" aria-label="Goal">
-		<button class="positive" data-target="goal" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button class="negative" data-target="goal" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
-	</li>
-	<li id="acceptance" class="ui-state-default" data-level="0" aria-label="Acceptance">
-		<button class="positive" data-target="acceptance" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button class="negative" data-target="acceptance" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
-	</li>
-	<li id="freedom" class="ui-state-default" data-level="0" aria-label="Freedom">
-		<button class="positive" data-target="freedom" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button class="negative" data-target="freedom" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
-	</li>
-	<li id="curiosity" class="ui-state-default" data-level="0" aria-label="Curiosity">
-		<button class="positive" data-target="curiosity" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button class="negative" data-target="curiosity" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
-	</li>
-	<li id="mastery" class="ui-state-default" data-level="0" aria-label="Mastery">
-		<button class="positive" data-target="mastery" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button class="negative" data-target="mastery" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
-	</li>
-	<li id="status" class="ui-state-default" data-level="0" aria-label="Status">
-		<button class="positive" data-target="status" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button class="negative" data-target="status" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
-	</li>
-	<li id="order" class="ui-state-default" data-level="0" aria-label="Order">
-		<button class="positive" data-target="order" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button class="negative" data-target="order" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
-	</li>
-	<li id="honor" class="ui-state-default" data-level="0" aria-label="Honor">
-		<button class="positive" data-target="honor" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button class="negative" data-target="honor" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
-	</li>
-	<li id="relatedness" class="ui-state-default" data-level="0" aria-label="Relatedness">
-		<button class="positive" data-target="relatedness" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button class="negative" data-target="relatedness" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
-	</li>
-</ul>
+  <div>
+    <a class="wrap" href="https://julio-gulias.github.io/mov-motivators/moving-motivators.html">
+      <img src="images/link-moved.png" alt="Moving Motivators has moved to a new address">
+    </a>
+    <p class="fallback">
+      Redirecting automatically&hellip; if nothing happens,
+      <a href="https://julio-gulias.github.io/mov-motivators/moving-motivators.html">click here</a>.
+    </p>
+  </div>
 
 </body>
 </html>
