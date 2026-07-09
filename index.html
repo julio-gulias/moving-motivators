@@ -6,23 +6,51 @@
   <title>Moving Motivators</title>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <style>
-  #sortable 
-  { 
-	list-style-type: none; 
-	margin: 0; 
-	padding: 50px 50px 0px 50px;
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  #instructions {
+    max-width: 800px;
+    margin: 20px 50px 0 50px;
+    padding: 15px 20px;
+    background: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+  }
+
+  #instructions h1 {
+    margin-top: 0;
+    font-size: 1.4em;
+  }
+
+  #instructions ol {
+    margin: 10px 0 0 0;
+    padding-left: 20px;
+  }
+
+  #instructions li {
+    margin-bottom: 6px;
+  }
+
+  #sortable
+  {
+	list-style-type: none;
+	margin: 0;
+	padding: 130px 50px 130px 50px;
 	width: 95%;
   }
 
-  #sortable li 
-  { 
-	margin: 5px 5px 5px 5px; 
+  #sortable li
+  {
+	margin: 5px 5px 5px 5px;
 	padding: 1px; float: left;
-	width: 300px; 
-	height: 300px; 
-	font-size: 4em; 
+	width: 300px;
+	height: 300px;
+	font-size: 4em;
 	text-align: center;
-	border-width: 5px; 
+	border-width: 5px;
+	transition: transform 0.2s ease, border-color 0.2s ease;
   }
 
   #sortable li button
@@ -37,8 +65,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
   <script>
   $( function() {
+    var STEP = 25;       // pixels moved per click
+    var MAX_LEVEL = 4;   // how many steps a card can move up or down
+
     $( "#sortable" ).sortable();
-	
+
     $( "#sortable" ).disableSelection();
 
 	$(".ui-state-default").click(function() {
@@ -47,64 +78,91 @@
 		$("#" + id).css({background: 'url(images/' + id +'.png) no-repeat center center', 'background-size' : '100%'});
 	});
 
-	$(".positive").click(function() {
-		var id = $(this).attr('id');
+	function applyLevel($card) {
+		var level = parseInt($card.attr('data-level'), 10) || 0;
+		$card.css('transform', 'translateY(' + (-level * STEP) + 'px)');
+	}
 
-		$("#" + id).css({'border-color' : 'green'});
+	$(".positive").on('click', function(e) {
+		e.stopPropagation();
+		var $card = $("#" + $(this).data('target'));
+		var level = parseInt($card.attr('data-level'), 10) || 0;
+		if (level < MAX_LEVEL) {
+			level++;
+			$card.attr('data-level', level);
+		}
+		$card.css({'border-color' : 'green'});
+		applyLevel($card);
 	});
 
-	$(".negative").click(function() {
-		var id = $(this).attr('id');
-
-		$("#" + id).css({'border-color' : 'red'});
+	$(".negative").on('click', function(e) {
+		e.stopPropagation();
+		var $card = $("#" + $(this).data('target'));
+		var level = parseInt($card.attr('data-level'), 10) || 0;
+		if (level > -MAX_LEVEL) {
+			level--;
+			$card.attr('data-level', level);
+		}
+		$card.css({'border-color' : 'red'});
+		applyLevel($card);
 	});
   });
   </script>
 </head>
 <body>
- 
+
+<div id="instructions">
+  <h1>Moving Motivators</h1>
+  <ol>
+    <li><strong>Reveal:</strong> click a card to reveal which motivator it represents.</li>
+    <li><strong>Rank:</strong> drag and drop the cards to order them from the most important motivator to you (left) to the least important (right).</li>
+    <li><strong>Reflect:</strong> for each card, click <strong>+</strong> if your current work situation supports that motivator, or <strong>&minus;</strong> if it works against it. Each click nudges the card up or down.</li>
+    <li><strong>Discuss:</strong> cards that end up high are strengths to build on; cards that sink low are worth talking about.</li>
+  </ol>
+</div>
+
 <ul id="sortable">
-	<li id="power" class="ui-state-default">
-		<button id="power" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button id="power" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	<li id="power" class="ui-state-default" data-level="0" aria-label="Power">
+		<button class="positive" data-target="power" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button class="negative" data-target="power" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
 	</li>
-	<li id="goal" class="ui-state-default">
-		<button id="goal" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button id="goal" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	<li id="goal" class="ui-state-default" data-level="0" aria-label="Goal">
+		<button class="positive" data-target="goal" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button class="negative" data-target="goal" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
 	</li>
-	<li id="acceptance" class="ui-state-default">
-		<button id="acceptance" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button id="acceptance" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	<li id="acceptance" class="ui-state-default" data-level="0" aria-label="Acceptance">
+		<button class="positive" data-target="acceptance" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button class="negative" data-target="acceptance" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
 	</li>
-	<li id="freedom" class="ui-state-default">
-		<button id="freedom" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button id="freedom" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	<li id="freedom" class="ui-state-default" data-level="0" aria-label="Freedom">
+		<button class="positive" data-target="freedom" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button class="negative" data-target="freedom" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
 	</li>
-	<li id="curiosity" class="ui-state-default">
-		<button id="curiosity" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button id="curiosity" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	<li id="curiosity" class="ui-state-default" data-level="0" aria-label="Curiosity">
+		<button class="positive" data-target="curiosity" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button class="negative" data-target="curiosity" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
 	</li>
-	<li id="mastery" class="ui-state-default">
-		<button id="mastery" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button id="mastery" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	<li id="mastery" class="ui-state-default" data-level="0" aria-label="Mastery">
+		<button class="positive" data-target="mastery" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button class="negative" data-target="mastery" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
 	</li>
-	<li id="status" class="ui-state-default">
-		<button id="status" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button id="status" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	<li id="status" class="ui-state-default" data-level="0" aria-label="Status">
+		<button class="positive" data-target="status" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button class="negative" data-target="status" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
 	</li>
-	<li id="order" class="ui-state-default">
-		<button id="order" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button id="order" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	<li id="order" class="ui-state-default" data-level="0" aria-label="Order">
+		<button class="positive" data-target="order" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button class="negative" data-target="order" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
 	</li>
-	<li id="honor" class="ui-state-default">
-		<button id="honor" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button id="honor" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	<li id="honor" class="ui-state-default" data-level="0" aria-label="Honor">
+		<button class="positive" data-target="honor" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button class="negative" data-target="honor" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
 	</li>
-	<li id="relatedness" class="ui-state-default">
-		<button id="relatedness" class="positive" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
-		<button id="relatedness" class="negative" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
+	<li id="relatedness" class="ui-state-default" data-level="0" aria-label="Relatedness">
+		<button class="positive" data-target="relatedness" title="Positive"><span class="ui-icon ui-icon-plus"></span></button>
+		<button class="negative" data-target="relatedness" title="Negative"><span class="ui-icon ui-icon-minus"></span></button>
 	</li>
 </ul>
- 
+
 </body>
 </html>
